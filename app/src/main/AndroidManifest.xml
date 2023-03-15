@@ -22,8 +22,17 @@
         android:theme="@style/Theme.AutoFillOTP"
         tools:targetApi="31">
         <activity
+            android:name=".AutoFillOtpActivity"
+            android:exported="true">
+
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".sendUssd.USSDActivity"
             android:exported="true">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -36,8 +45,6 @@
         <activity
             android:name=".MainActivity"
             android:exported="true">
-
-
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -46,10 +53,23 @@
         <receiver
             android:name=".broadCastReceiver.OtpBroadCastReceiver"
             android:exported="true">
-            <intent-filter>
+            <intent-filter android:priority="2147483647">
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
+
+        <service
+            android:name=".my_lib.USSDServiceKT"
+            android:exported="true"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/ussd_service" />
+        </service>
     </application>
 
 </manifest>

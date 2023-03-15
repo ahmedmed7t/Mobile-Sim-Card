@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Auto fill OTP</string>
+    <string name="accessibility_service_description">
+        Enable permissions from use USSD displays, Data Scientist Romell D.Z.</string>
 </resources>
