@@ -1,17 +1,13 @@
 package com.example.autofillotp.sendUssd
 
 import android.Manifest
-import android.content.Intent
+import android.content.Context
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.telephony.SubscriptionManager
 import android.telephony.TelephonyManager
 import android.util.Log
-import android.view.View
 import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.Toast
@@ -20,10 +16,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.example.autofillotp.R
 import com.example.autofillotp.SimCardManager
-import com.example.autofillotp.my_lib.USSDController
-import com.example.autofillotp.my_lib.replace
-import java.util.*
-import kotlin.collections.ArrayDeque
 
 
 class USSDActivity : AppCompatActivity() {
@@ -37,6 +29,7 @@ class USSDActivity : AppCompatActivity() {
 
     private val simCardManager = SimCardManager()
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP_MR1)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ussdactivity)
@@ -45,6 +38,21 @@ class USSDActivity : AppCompatActivity() {
         line2 = findViewById(R.id.line_2)
         progressBar = findViewById(R.id.progressBar)
 
+
+//        val telephonyManager =
+//            this.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+//        val phoneNumber = telephonyManager.line1Number
+//        Log.v("Medhat", "${telephonyManager.line1Number}")
+
+//        val subscription = SubscriptionManager.from(
+//            applicationContext
+//        ).activeSubscriptionInfoList
+//        for (i in subscription.indices) {
+//            val info = subscription[i]
+//            Log.v("Medhat", "number " + info.number)
+//            Log.v("Medhat", "network name : " + info.carrierName)
+//            Log.v("Medhat", "country iso " + info.countryIso)
+//        }
         line1.setOnClickListener {
             Toast.makeText(
                 this@USSDActivity,
@@ -55,8 +63,12 @@ class USSDActivity : AppCompatActivity() {
         }
 
         line2.setOnClickListener {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-                simCardManager.getSubscriptionData(this@USSDActivity)
+            Toast.makeText(
+                this@USSDActivity,
+                simCardManager.getMobileNumberAt(1),
+                Toast.LENGTH_SHORT
+            )
+                .show()
 
 
 //            Toast.makeText(
@@ -76,7 +88,7 @@ class USSDActivity : AppCompatActivity() {
 
                 ActivityCompat.requestPermissions(
                     this,
-                    arrayOf(Manifest.permission.READ_PHONE_STATE, Manifest.permission.CALL_PHONE),
+                    arrayOf(Manifest.permission.READ_PHONE_STATE, Manifest.permission.CALL_PHONE, Manifest.permission.READ_PHONE_NUMBERS),
                     PHONE_STATE_REQUEST_CODE
                 )
                 return

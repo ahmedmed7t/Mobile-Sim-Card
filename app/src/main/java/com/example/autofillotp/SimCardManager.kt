@@ -1,9 +1,7 @@
 package com.example.autofillotp
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
@@ -11,7 +9,6 @@ import android.telephony.SubscriptionManager
 import android.telephony.TelephonyManager
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import com.example.autofillotp.sendUssd.SimCardModel
 
 class SimCardManager {
@@ -58,8 +55,8 @@ class SimCardManager {
             context.getSystemService(AppCompatActivity.TELEPHONY_SERVICE) as TelephonyManager
         val mSim0TelephonyManager = telephonyManager.createForSubscriptionId(id)
 
-        if (mSim0TelephonyManager.networkOperatorName.lowercase().contains("orange"))
-            return
+//        if (mSim0TelephonyManager.networkOperatorName.lowercase().contains("orange"))
+//            return
 
         val handler = Handler(Looper.getMainLooper())
         val responseCallback: TelephonyManager.UssdResponseCallback =
@@ -108,7 +105,7 @@ class SimCardManager {
             when {
                 contains("vodafone") -> "*878#"
                 contains("etisalat") -> "*947#"
-                contains("orange") -> "#119#1#"
+                contains("orange") -> "#119*1#"
                 contains("we") -> "*688#"
                 else -> {
                     ""
@@ -119,8 +116,11 @@ class SimCardManager {
 
     private fun getMobileNumber(fullMessage: String): String {
         val splitMessage = fullMessage.split("01".toRegex(), 2)
-        val mobileNumber = splitMessage[1].filter { it.isDigit() }
-        return "01$mobileNumber"
+        var mobileNumber = ""
+        if (splitMessage.size > 1) {
+            mobileNumber = "01"+splitMessage[1].filter { it.isDigit() }
+        }
+        return mobileNumber
     }
 
     fun getMobileNumberAt(index: Int): String {

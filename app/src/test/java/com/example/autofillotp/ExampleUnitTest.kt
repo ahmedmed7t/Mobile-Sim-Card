@@ -12,6 +12,16 @@ import org.junit.Assert.*
 class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
+        assertEquals("", getMobileNumber("my name is Ahmed and "))
     }
+
+    private fun getMobileNumber(fullMessage: String): String {
+        val splitMessage = fullMessage.split("01".toRegex(), 2)
+        var mobileNumber = ""
+        if (splitMessage.size > 1) {
+            mobileNumber = "01"+splitMessage[1].filter { it.isDigit() }
+        }
+        return mobileNumber
+    }
+
 }

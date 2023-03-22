@@ -20,7 +20,7 @@ object SimCardsData {
 
     fun getMobileNumberAt(index: Int): String {
         return if (index < simCards.size)
-            simCards[simCards.keys.elementAt(0)]?.mobileNumber ?: ""
+            simCards[simCards.keys.elementAt(index)]?.mobileNumber ?: ""
         else
             ""
     }
